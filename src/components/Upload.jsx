@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { Grid, Input, InputLabel, Paper, TextField } from "@mui/material";
 import LoadingModal from "../Shared/LoadingModal";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Upload = () => {
 	const navigate = useNavigate();
@@ -33,7 +34,6 @@ const Upload = () => {
 
 			const res = await axios.post(api, data);
 			const { secure_url } = res.data;
-			console.log("secure_url", secure_url);
 			return secure_url;
 		} catch (error) {
 			console.error(error);
@@ -43,24 +43,74 @@ const Upload = () => {
 	const onSubmit = async (data) => {
 		try {
 			// Upload file
-			const fileUrl = await uploadFile("file", data.file[0]);
+			const musicUrl = await uploadFile("file", data.file[0]);
+			const tracks = {
+				title: data.title,
+				artist: data.artist,
+				category: data.category,
+				musicUrl,
+			};
 
-			// Send backend api request
-			// await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/videos`, {
-			// 	fileUrl,
-			// });
+			if (musicUrl) {
+				// Send backend api request
+				sendToServer(tracks);
+			} else {
+				failedToast();
+			}
 
-			reset();
 			setLoading(false);
-			console.log("File upload success!", fileUrl);
-			navigate("/");
-
-			// Reset form
 		} catch (error) {
 			console.error(error);
 		} finally {
 			setLoading(false);
 		}
+	};
+
+	// Send information to server
+	const sendToServer = async (tracks) => {
+		await fetch("http://localhost:5000/api/v1/music/create-musicTrack", {
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: JSON.stringify(tracks),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if ((data.statuscode === 200) | (data.success === true)) {
+					console.log(data);
+					setLoading(false);
+					reset();
+					successToast(data?.message);
+					navigate("/");
+				}
+			});
+	};
+
+	// ToastyFye
+	const successToast = (t) => {
+		toast.success(t, {
+			position: "top-center",
+			autoClose: 1000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		});
+	};
+	const failedToast = () => {
+		toast.error("File Uploaded Failed ~", {
+			position: "top-center",
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		});
 	};
 
 	return (
@@ -139,6 +189,7 @@ const Upload = () => {
 				</form>
 			</Paper>
 
+			<ToastContainer />
 			{loading && <LoadingModal txt={"Your File is Uploading!"} />}
 		</div>
 	);
