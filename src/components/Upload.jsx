@@ -59,7 +59,7 @@ const Upload = () => {
 	return (
 		<Paper elevation={6} sx={{ m: 5, p: "2rem" }}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Grid rowSpacing={5} columnSpacing={5}>
+				<Grid container spacing={1.5}>
 					{/* Title */}
 					<Grid item xs={12}>
 						<InputLabel htmlFor="name">Title</InputLabel>
@@ -68,38 +68,62 @@ const Upload = () => {
 							size="small"
 							id="title"
 							variant="outlined"
-							{...register("title", { required: "Title field is empty" })}
+							{...register("title", { required: "Title is empty" })}
 						/>{" "}
-						{errors.title && <small style={{ color: "red" }}>{errors.title?.message}</small>}
+						{errors.title && (
+							<small style={{ color: "red", fontWeight: "bold" }}>{errors.title?.message}</small>
+						)}
 					</Grid>
 
-					{/* Link  */}
+					{/* Artist Name  */}
 					<Grid item xs={12}>
-						<InputLabel htmlFor="link">Blog link</InputLabel>
+						<InputLabel htmlFor="artist">Artist Name</InputLabel>
 						<TextField
 							size="small"
 							fullWidth
-							id="title"
+							id="artist"
 							variant="outlined"
-							{...register("link", { required: "Link field is empty" })}
+							{...register("artist", { required: "Artist Name is empty" })}
 						/>{" "}
-						{errors.link && <small style={{ color: "red" }}>{errors.link?.message}</small>}
+						{errors.artist && (
+							<small style={{ color: "red", fontWeight: "bold" }}>{errors.artist?.message}</small>
+						)}
+					</Grid>
+
+					{/* Artist Name  */}
+					<Grid item xs={12}>
+						<InputLabel htmlFor="category">Category</InputLabel>
+						<TextField
+							size="small"
+							fullWidth
+							id="category"
+							variant="outlined"
+							{...register("category", { required: "Category is empty" })}
+						/>{" "}
+						{errors.category && (
+							<small style={{ color: "red", fontWeight: "bold" }}>{errors.category?.message}</small>
+						)}
 					</Grid>
 
 					{/* Image */}
 					<Grid item xs={12}>
 						<InputLabel htmlFor="file">Select your file.</InputLabel>
-
 						<Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-							<Input type="file" id="file" {...register("file")} style={{ display: "none" }} size="large" />
+							<Input
+								type="file"
+								id="file"
+								{...register("file", { required: "Selected file is empty" })}
+								style={{ display: "none" }}
+							/>
 						</Button>
-
-						{errors.image && <small style={{ color: "red" }}> {errors.image?.message}</small>}
+						{errors.file && (
+							<small style={{ color: "red", fontWeight: "bold" }}>{errors.file?.message}</small>
+						)}
 					</Grid>
 
 					{/* Button  */}
 					<Grid item xs={12}>
-						<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem" }}>
+						<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem", mt: "1rem" }}>
 							Upload
 						</Button>
 					</Grid>
