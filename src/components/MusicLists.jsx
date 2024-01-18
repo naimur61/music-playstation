@@ -1,54 +1,52 @@
-import React, { useState } from "react";
-import { List, ListItem, Button, Typography, Paper } from "@mui/material";
+import React from "react";
+import {
+	Paper,
+	Typography,
+	Button,
+	Card,
+	CardContent,
+	CardActions,
+	CardMedia,
+	Grid,
+	Box,
+} from "@mui/material";
+import LoadingModal from "../Shared/LoadingModal";
 
-const tracks = [
-	{ id: 1, title: "Track 1", artist: "Artist 1", src: "path/to/track1.mp3" },
-	{ id: 2, title: "Track 2", artist: "Artist 2", src: "path/to/track2.mp3" },
-];
-
-const MusicLists = () => {
-	const [selectedTrack, setSelectedTrack] = useState(null);
-
-	const playTrack = (track) => {
-		setSelectedTrack(track);
-	};
-
+const MusicLists = ({ tracks }) => {
 	return (
-		<Paper
-			elevation={3}
-			sx={{ padding: 2, display: "flex", flexDirection: "column", alignItems: "center", mt: 5 }}
-		>
-			<Typography component="h1" variant="h5">
-				Playlist
-			</Typography>
-			<List>
-				{tracks.map((track) => (
-					<ListItem key={track.id} sx={{ display: "flex", justifyContent: "space-between" }}>
-						<Typography>
-							{track.title} by {track.artist}
-						</Typography>
-						<Button variant="contained" onClick={() => playTrack(track)}>
-							Play
-						</Button>
-					</ListItem>
-				))}
-			</List>
-			{selectedTrack && (
+		<Box sx={{ padding: 5, mt: 5 }}>
+			{tracks ? (
 				<div>
-					<Typography variant="h6" gutterBottom>
-						Now Playing
-					</Typography>
-					<Typography>
-						{selectedTrack.title} by {selectedTrack.artist}
-					</Typography>
-					{/* Add audio player here with controls and source */}
-					<audio controls style={{ width: "100%", marginTop: "10px" }}>
-						<source src={selectedTrack.src} type="audio/mp3" />
-						Your browser does not support the audio element.
-					</audio>
+					All Tracks {tracks.message}
+					{tracks.data && Array.isArray(tracks.data) ? (
+						<Grid container spacing={2}>
+							{tracks.data.map((track, i) => (
+								<Grid item xs={12} md={6} lg={4} key={i}>
+									<Paper elevation={3}>
+										<CardMedia component="img" height="140" alt={track.title} src={track.musicUrl} />
+										<CardContent>
+											<Typography variant="h6" component="div">
+												{track.title}
+											</Typography>
+											<Typography variant="subtitle1" color="text.secondary">
+												{track.artist}
+											</Typography>
+										</CardContent>
+										<CardActions>
+											<Button variant="contained">Play</Button>
+										</CardActions>
+									</Paper>
+								</Grid>
+							))}
+						</Grid>
+					) : (
+						<p>No track data available</p>
+					)}
 				</div>
+			) : (
+				<LoadingModal txt={"Loading !"} />
 			)}
-		</Paper>
+		</Box>
 	);
 };
 
