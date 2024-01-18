@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, CssBaseline } from "@mui/material";
 import LoadingModal from "../Shared/LoadingModal";
-import Test from "../components/Test";
 import axios from "axios";
 import MusicLists from "../components/MusicLists";
 

@@ -1,16 +1,7 @@
 import React from "react";
-import {
-	Paper,
-	Typography,
-	Button,
-	Card,
-	CardContent,
-	CardActions,
-	CardMedia,
-	Grid,
-	Box,
-} from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import LoadingModal from "../Shared/LoadingModal";
+import MusicCard from "./MusicCard";
 
 const MusicLists = ({ tracks }) => {
 	return (
@@ -21,22 +12,7 @@ const MusicLists = ({ tracks }) => {
 					{tracks.data && Array.isArray(tracks.data) ? (
 						<Grid container spacing={2}>
 							{tracks.data.map((track, i) => (
-								<Grid item xs={12} md={6} lg={4} key={i}>
-									<Paper elevation={3}>
-										<CardMedia component="img" height="140" alt={track.title} src={track.musicUrl} />
-										<CardContent>
-											<Typography variant="h6" component="div">
-												{track.title}
-											</Typography>
-											<Typography variant="subtitle1" color="text.secondary">
-												{track.artist}
-											</Typography>
-										</CardContent>
-										<CardActions>
-											<Button variant="contained">Play</Button>
-										</CardActions>
-									</Paper>
-								</Grid>
+								<MusicCard key={i} track={track} />
 							))}
 						</Grid>
 					) : (
