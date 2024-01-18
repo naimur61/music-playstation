@@ -61,10 +61,11 @@ const Upload = () => {
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Grid rowSpacing={5} columnSpacing={5}>
 					{/* Title */}
-					<Grid xs={12}>
+					<Grid item xs={12}>
 						<InputLabel htmlFor="name">Title</InputLabel>
 						<TextField
 							fullWidth
+							size="small"
 							id="title"
 							variant="outlined"
 							{...register("title", { required: "Title field is empty" })}
@@ -73,9 +74,10 @@ const Upload = () => {
 					</Grid>
 
 					{/* Link  */}
-					<Grid xs={12}>
+					<Grid item xs={12}>
 						<InputLabel htmlFor="link">Blog link</InputLabel>
 						<TextField
+							size="small"
 							fullWidth
 							id="title"
 							variant="outlined"
@@ -85,18 +87,18 @@ const Upload = () => {
 					</Grid>
 
 					{/* Image */}
-					<Grid xs={12}>
+					<Grid item xs={12}>
 						<InputLabel htmlFor="file">Select your file.</InputLabel>
 
 						<Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-							<Input type="file" id="file" {...register("file")} style={{ display: "none" }} />
+							<Input type="file" id="file" {...register("file")} style={{ display: "none" }} size="large" />
 						</Button>
 
 						{errors.image && <small style={{ color: "red" }}> {errors.image?.message}</small>}
 					</Grid>
 
 					{/* Button  */}
-					<Grid xs={12}>
+					<Grid item xs={12}>
 						<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem" }}>
 							Upload
 						</Button>
