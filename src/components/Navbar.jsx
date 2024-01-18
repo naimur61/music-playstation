@@ -9,6 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import logo from "../asset/headphone.png";
 import SearchIcon from "@mui/icons-material/Search";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
 	position: "relative",
@@ -51,11 +52,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+	const navigate = useNavigate();
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="fixed">
 				<Toolbar>
-					<IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+					<IconButton
+						size="large"
+						edge="start"
+						color="inherit"
+						aria-label="open drawer"
+						sx={{ mr: 2 }}
+						onClick={() => {
+							navigate("/");
+						}}
+					>
 						<Box component="img" src={logo} width="30px" height="30px" />
 					</IconButton>
 					<Typography variant="h6" noWrap component="div">
@@ -78,7 +90,9 @@ export default function Navbar() {
 							edge="end"
 							aria-label="account of current user"
 							aria-haspopup="true"
-							// onClick={handleProfileMenuOpen}
+							onClick={() => {
+								navigate("/upload");
+							}}
 							color="inherit"
 						>
 							<CloudUploadIcon />

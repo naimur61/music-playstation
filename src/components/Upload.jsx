@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Button from "@mui/material/Button";
 import { ThreeDots } from "react-loader-spinner";
+import { Input, Paper, Stack } from "@mui/material";
 
 const Upload = () => {
-	const [img, setImg] = useState(null);
-	const [video, setVideo] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const { register, handleSubmit } = useForm();
+	const [loading, setLoading] = React.useState(false);
 
-	const navigate = useNavigate();
-
-	const uploadFile = async (type) => {
+	const uploadFile = async (type, file) => {
 		const data = new FormData();
 
-		data.append("file", type === "image" ? img : video);
-		data.append("upload_preset", type === "image" ? "images_preset" : "videos_preset");
+		data.append("file", file);
+		data.append("upload_preset", type === "audio" ? "audios_preset" : "videos_preset");
 
 		try {
 			let cloudName = "ddqogmklx";
-			let resourceType = type === "image" ? "image" : "video";
+			let resourceType = type === "audio" ? "audio" : "video";
 
 			let api = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
 
@@ -31,60 +31,59 @@ const Upload = () => {
 		}
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-
+	const onSubmit = async (data) => {
 		try {
 			setLoading(true);
 
-			// Upload image file
-			const imgUrl = await uploadFile("image");
-
-			// Upload video file
-			const videoUrl = await uploadFile("video");
+			// Upload file
+			const fileUrl = await uploadFile("file", data.file[0]);
 
 			// Send backend api request
-			// await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/videos`, { imgUrl, videoUrl });
+			await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/videos`, {
+				fileUrl,
+			});
 
-			// Reset states
-			setImg(null);
-			setVideo(null);
-
-			console.log("File upload success!", imgUrl, videoUrl);
-			setLoading(false);
-			navigate("/");
+			// Reset form
+			console.log("File upload success!", fileUrl);
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="video">Video:</label>
-					<br />
-					<input
+		<Stack justifyContent="center" mt="3rem">
+			<Paper elevation={6} sx={{ mx: "auto", p: "2rem" }}>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					{/* 	
+						<label htmlFor="file">Upload Video/Audio:</label>
+						<br />
+						<Input type="file" id="file" {...register("file")} />
+			
+					<Button
+						component="label"
+						variant="contained"
+						startIcon={<CloudUploadIcon />}
+						htmlFor="file" 
 						type="file"
-						accept="video/*"
-						id="video"
-						onChange={(e) => setVideo((prev) => e.target.files[0])}
-					/>
-				</div>
-				<br />
-				<div>
-					<label htmlFor="img">Image:</label>
+						id="file"
+						{...register("file")}
+					>
+						Upload your file
+					</Button> */}
+
+					<label htmlFor="file">Upload Video/Audio:</label>
 					<br />
-					<input
-						type="file"
-						accept="image/*"
-						id="img"
-						onChange={(e) => setImg((prev) => e.target.files[0])}
-					/>
-				</div>
-				<br />
-				<button type="submit">Upload</button>
-			</form>
+					<Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+						Upload your file
+						<Input type="file" id="file" {...register("file")} style={{ display: "none" }} />
+					</Button>
+
+					<br />
+					<button type="submit">Upload</button>
+				</form>
+			</Paper>
 
 			{loading && (
 				<ThreeDots
@@ -98,7 +97,7 @@ const Upload = () => {
 					visible={true}
 				/>
 			)}
-		</div>
+		</Stack>
 	);
 };
 

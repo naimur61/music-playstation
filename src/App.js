@@ -2,11 +2,12 @@
 import React from "react";
 
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function App() {
 	return (
 		<div>
-			{/* <h1>Music Track</h1> */}
+			<Navbar />
 
 			<br />
 			<br />

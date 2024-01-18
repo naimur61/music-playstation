@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Container, List, ListItem, Button, Typography, CssBaseline, Paper } from "@mui/material";
 import NewTest from "../components/NewTest";
 
-import Navbar from "../components/Navbar";
-
 const tracks = [
 	{ id: 1, title: "Track 1", artist: "Artist 1", src: "path/to/track1.mp3" },
 	{ id: 2, title: "Track 2", artist: "Artist 2", src: "path/to/track2.mp3" },
@@ -18,7 +16,6 @@ const Home = () => {
 	return (
 		<div className="App">
 			<CssBaseline />
-			<Navbar />
 
 			<Container component="main" maxWidth="xs">
 				<Paper
