@@ -56,23 +56,6 @@ const Upload = () => {
 		<Stack justifyContent="center" mt="3rem">
 			<Paper elevation={6} sx={{ mx: "auto", p: "2rem" }}>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					{/* 	
-						<label htmlFor="file">Upload Video/Audio:</label>
-						<br />
-						<Input type="file" id="file" {...register("file")} />
-			
-					<Button
-						component="label"
-						variant="contained"
-						startIcon={<CloudUploadIcon />}
-						htmlFor="file" 
-						type="file"
-						id="file"
-						{...register("file")}
-					>
-						Upload your file
-					</Button> */}
-
 					<label htmlFor="file">Upload Video/Audio:</label>
 					<br />
 					<Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
