@@ -139,7 +139,7 @@ const Upload = () => {
 				</form>
 			</Paper>
 
-			{loading && <LoadingModal />}
+			{loading && <LoadingModal txt={"Your File is Uploading!"} />}
 		</div>
 	);
 };

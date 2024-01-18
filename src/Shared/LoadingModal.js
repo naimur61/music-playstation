@@ -18,7 +18,7 @@ const containerStyle = {
 	backdropFilter: "blur(10px)", // Blue background outside the modal
 };
 
-const LoadingModal = () => {
+const LoadingModal = ({ txt }) => {
 	const style = {
 		position: "absolute",
 		top: "50%",
@@ -43,7 +43,7 @@ const LoadingModal = () => {
 						visible={true}
 					/>
 					<Typography variant="h4" mt="2rem" color="white" fontWeight="bold" textAlign="center">
-						Your fil is Uploading !
+						{txt}
 					</Typography>
 				</Stack>
 			</Modal>
