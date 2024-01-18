@@ -3,11 +3,15 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
-import { ThreeDots } from "react-loader-spinner";
-import { Input, Paper, Stack } from "@mui/material";
+import { Grid, Input, InputLabel, Paper, TextField } from "@mui/material";
 
 const Upload = () => {
-	const { register, handleSubmit } = useForm();
+	const {
+		register,
+		handleSubmit,
+		// reset,
+		formState: { errors },
+	} = useForm();
 	const [loading, setLoading] = React.useState(false);
 
 	const uploadFile = async (type, file) => {
@@ -53,34 +57,53 @@ const Upload = () => {
 	};
 
 	return (
-		<Stack justifyContent="center" mt="3rem">
-			<Paper elevation={6} sx={{ mx: "auto", p: "2rem" }}>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<label htmlFor="file">Upload Video/Audio:</label>
-					<br />
-					<Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-						Upload your file
-						<Input type="file" id="file" {...register("file")} style={{ display: "none" }} />
-					</Button>
+		<Paper elevation={6} sx={{ mx: "auto", p: "2rem" }}>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Grid container justifyContent="center" rowSpacing={5} columnSpacing={5}>
+					{/* Title */}
+					<Grid xs={12}>
+						<InputLabel htmlFor="name">Title</InputLabel>
+						<TextField
+							fullWidth
+							id="title"
+							variant="outlined"
+							{...register("title", { required: "Title field is empty" })}
+						/>{" "}
+						{errors.title && <small style={{ color: "red" }}>{errors.title?.message}</small>}
+					</Grid>
 
-					<br />
-					<button type="submit">Upload</button>
-				</form>
-			</Paper>
+					{/* Link  */}
+					<Grid xs={12}>
+						<InputLabel htmlFor="link">Blog link</InputLabel>
+						<TextField
+							fullWidth
+							id="title"
+							variant="outlined"
+							{...register("link", { required: "Link field is empty" })}
+						/>{" "}
+						{errors.link && <small style={{ color: "red" }}>{errors.link?.message}</small>}
+					</Grid>
 
-			{loading && (
-				<ThreeDots
-					height="80"
-					width="80"
-					radius="9"
-					color="#4fa94d"
-					ariaLabel="three-dots-loading"
-					wrapperStyle={{}}
-					wrapperClassName=""
-					visible={true}
-				/>
-			)}
-		</Stack>
+					{/* Image */}
+					<Grid xs={12}>
+						<InputLabel htmlFor="file">Select your file.</InputLabel>
+
+						<Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+							<Input type="file" id="file" {...register("file")} style={{ display: "none" }} />
+						</Button>
+
+						{errors.image && <small style={{ color: "red" }}> {errors.image?.message}</small>}
+					</Grid>
+
+					{/* Button  */}
+					<Grid xs={12}>
+						<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem" }}>
+							Upload
+						</Button>
+					</Grid>
+				</Grid>
+			</form>
+		</Paper>
 	);
 };
 
