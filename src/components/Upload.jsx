@@ -57,9 +57,9 @@ const Upload = () => {
 	};
 
 	return (
-		<Paper elevation={6} sx={{ mx: "auto", p: "2rem" }}>
+		<Paper elevation={6} sx={{ m: 5, p: "2rem" }}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Grid container justifyContent="center" rowSpacing={5} columnSpacing={5}>
+				<Grid rowSpacing={5} columnSpacing={5}>
 					{/* Title */}
 					<Grid xs={12}>
 						<InputLabel htmlFor="name">Title</InputLabel>
