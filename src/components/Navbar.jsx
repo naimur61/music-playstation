@@ -70,7 +70,13 @@ export default function Navbar() {
 					>
 						<Box component="img" src={logo} width="30px" height="30px" />
 					</IconButton>
-					<Typography variant="h6" noWrap component="div">
+					<Typography
+						variant="h6"
+						xs="none"
+						noWrap
+						component="div"
+						sx={{ display: { xs: "none", sm: "block" } }}
+					>
 						Music Track
 					</Typography>
 

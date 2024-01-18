@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
 import { Grid, Input, InputLabel, Paper, TextField } from "@mui/material";
+import LoadingModal from "../Shared/LoadingModal";
+import { useNavigate } from "react-router-dom";
 
 const Upload = () => {
+	const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
-		// reset,
+		reset,
 		formState: { errors },
 	} = useForm();
-	const [loading, setLoading] = React.useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const uploadFile = async (type, file) => {
+		setLoading(true);
 		const data = new FormData();
 
 		data.append("file", file);
@@ -37,18 +42,20 @@ const Upload = () => {
 
 	const onSubmit = async (data) => {
 		try {
-			setLoading(true);
-
 			// Upload file
 			const fileUrl = await uploadFile("file", data.file[0]);
 
 			// Send backend api request
-			await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/videos`, {
-				fileUrl,
-			});
+			// await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/videos`, {
+			// 	fileUrl,
+			// });
+
+			reset();
+			setLoading(false);
+			console.log("File upload success!", fileUrl);
+			navigate("/");
 
 			// Reset form
-			console.log("File upload success!", fileUrl);
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -57,79 +64,83 @@ const Upload = () => {
 	};
 
 	return (
-		<Paper elevation={6} sx={{ m: 5, p: "2rem" }}>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<Grid container spacing={1.5}>
-					{/* Title */}
-					<Grid item xs={12}>
-						<InputLabel htmlFor="name">Title</InputLabel>
-						<TextField
-							fullWidth
-							size="small"
-							id="title"
-							variant="outlined"
-							{...register("title", { required: "Title is empty" })}
-						/>{" "}
-						{errors.title && (
-							<small style={{ color: "red", fontWeight: "bold" }}>{errors.title?.message}</small>
-						)}
-					</Grid>
+		<div>
+			<Paper elevation={6} sx={{ m: 5, p: "2rem" }}>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<Grid container spacing={1.5}>
+						{/* Title */}
+						<Grid item xs={12}>
+							<InputLabel htmlFor="name">Title</InputLabel>
+							<TextField
+								fullWidth
+								size="small"
+								id="title"
+								variant="outlined"
+								{...register("title", { required: "Title is empty" })}
+							/>{" "}
+							{errors.title && (
+								<small style={{ color: "red", fontWeight: "bold" }}>{errors.title?.message}</small>
+							)}
+						</Grid>
 
-					{/* Artist Name  */}
-					<Grid item xs={12}>
-						<InputLabel htmlFor="artist">Artist Name</InputLabel>
-						<TextField
-							size="small"
-							fullWidth
-							id="artist"
-							variant="outlined"
-							{...register("artist", { required: "Artist Name is empty" })}
-						/>{" "}
-						{errors.artist && (
-							<small style={{ color: "red", fontWeight: "bold" }}>{errors.artist?.message}</small>
-						)}
-					</Grid>
+						{/* Artist Name  */}
+						<Grid item xs={12}>
+							<InputLabel htmlFor="artist">Artist Name</InputLabel>
+							<TextField
+								size="small"
+								fullWidth
+								id="artist"
+								variant="outlined"
+								{...register("artist", { required: "Artist Name is empty" })}
+							/>{" "}
+							{errors.artist && (
+								<small style={{ color: "red", fontWeight: "bold" }}>{errors.artist?.message}</small>
+							)}
+						</Grid>
 
-					{/* Artist Name  */}
-					<Grid item xs={12}>
-						<InputLabel htmlFor="category">Category</InputLabel>
-						<TextField
-							size="small"
-							fullWidth
-							id="category"
-							variant="outlined"
-							{...register("category", { required: "Category is empty" })}
-						/>{" "}
-						{errors.category && (
-							<small style={{ color: "red", fontWeight: "bold" }}>{errors.category?.message}</small>
-						)}
-					</Grid>
+						{/* Artist Name  */}
+						<Grid item xs={12}>
+							<InputLabel htmlFor="category">Category</InputLabel>
+							<TextField
+								size="small"
+								fullWidth
+								id="category"
+								variant="outlined"
+								{...register("category", { required: "Category is empty" })}
+							/>{" "}
+							{errors.category && (
+								<small style={{ color: "red", fontWeight: "bold" }}>{errors.category?.message}</small>
+							)}
+						</Grid>
 
-					{/* Image */}
-					<Grid item xs={12}>
-						<InputLabel htmlFor="file">Select your file.</InputLabel>
-						<Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-							<Input
-								type="file"
-								id="file"
-								{...register("file", { required: "Selected file is empty" })}
-								style={{ display: "none" }}
-							/>
-						</Button>
-						{errors.file && (
-							<small style={{ color: "red", fontWeight: "bold" }}>{errors.file?.message}</small>
-						)}
-					</Grid>
+						{/* Image */}
+						<Grid item xs={12}>
+							<InputLabel htmlFor="file">Select your file.</InputLabel>
+							<Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+								<Input
+									type="file"
+									id="file"
+									{...register("file", { required: "Selected file is empty" })}
+									style={{ display: "none" }}
+								/>
+							</Button>
+							{errors.file && (
+								<small style={{ color: "red", fontWeight: "bold" }}>{errors.file?.message}</small>
+							)}
+						</Grid>
 
-					{/* Button  */}
-					<Grid item xs={12}>
-						<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem", mt: "1rem" }}>
-							Upload
-						</Button>
+						{/* Button  */}
+						<Grid item xs={12}>
+							<Button type="submit" variant="outlined" fullWidth sx={{ borderRadius: "3rem", mt: "1rem" }}>
+								Upload
+							</Button>
+						</Grid>
 					</Grid>
-				</Grid>
-			</form>
-		</Paper>
+				</form>
+			</Paper>
+
+			{loading && <LoadingModal />}
+		</div>
 	);
 };
 
