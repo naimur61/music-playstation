@@ -65,7 +65,6 @@ export default function Navbar({ setLoading, setTracks }) {
 
 	const handleSearchSubmit = () => {
 		setSearchTerm(searchText);
-		console.log(searchText);
 	};
 
 	// Data fetching
@@ -78,7 +77,6 @@ export default function Navbar({ setLoading, setTracks }) {
 						: "http://localhost:5000/api/v1/music"
 				);
 				setTracks(response.data);
-				console.log(response.data);
 				setLoading(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
