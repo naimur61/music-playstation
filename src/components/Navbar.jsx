@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -10,7 +10,9 @@ import logo from "../asset/headphone.png";
 import SearchIcon from "@mui/icons-material/Search";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+/*-------------------Search bar Style ----------------------*/
 const Search = styled("div")(({ theme }) => ({
 	position: "relative",
 	borderRadius: theme.shape.borderRadius,
@@ -50,9 +52,42 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 		},
 	},
 }));
+/*-------------------Search bar Style ----------------------*/
 
-export default function Navbar() {
+export default function Navbar({ setLoading, setTracks }) {
 	const navigate = useNavigate();
+	const [searchText, setSearchText] = useState("");
+	const [searchTerm, setSearchTerm] = useState(null);
+
+	const handleSearchInputChange = (e) => {
+		setSearchText(e.target.value);
+	};
+
+	const handleSearchSubmit = () => {
+		setSearchTerm(searchText);
+		console.log(searchText);
+	};
+
+	// Data fetching
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await axios.get(
+					searchTerm
+						? `http://localhost:5000/api/v1/music?search=${searchTerm}`
+						: "http://localhost:5000/api/v1/music"
+				);
+				setTracks(response.data);
+				console.log(response.data);
+				setLoading(false);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, [searchTerm, setLoading, setTracks]);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -85,7 +120,13 @@ export default function Navbar() {
 						<SearchIconWrapper>
 							<SearchIcon />
 						</SearchIconWrapper>
-						<StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+						<StyledInputBase
+							placeholder="Search…"
+							inputProps={{ "aria-label": "search" }}
+							value={searchText}
+							onChange={handleSearchInputChange}
+							onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
+						/>
 					</Search>
 					<Box sx={{ flexGrow: 1 }} />
 
