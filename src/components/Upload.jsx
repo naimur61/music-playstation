@@ -148,7 +148,7 @@ const Upload = () => {
 							)}
 						</Grid>
 
-						{/* Artist Name  */}
+						{/* Category  */}
 						<Grid item xs={12}>
 							<InputLabel htmlFor="category">Category</InputLabel>
 							<TextField
