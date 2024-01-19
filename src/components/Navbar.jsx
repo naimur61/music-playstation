@@ -73,8 +73,8 @@ export default function Navbar({ setLoading, setTracks }) {
 			try {
 				const response = await axios.get(
 					searchTerm
-						? `http://localhost:5000/api/v1/music?searchTerm=${searchTerm}`
-						: "http://localhost:5000/api/v1/music"
+						? `https://playstation-server.onrender.com/api/v1/music?searchTerm=${searchTerm}`
+						: "https://playstation-server.onrender.com/api/v1/music"
 				);
 				setTracks(response.data);
 				setLoading(false);

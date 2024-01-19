@@ -68,7 +68,7 @@ const Upload = () => {
 
 	// Send information to server
 	const sendToServer = async (tracks) => {
-		await fetch("http://localhost:5000/api/v1/music/create-musicTrack", {
+		await fetch("https://playstation-server.onrender.com/api/v1/music/create-musicTrack", {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",
