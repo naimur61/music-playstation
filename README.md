@@ -14,10 +14,6 @@ This React frontend is the client-side component for the MusicTrack application.
 
 To set up and run the MusicTrack frontend locally, follow these instructions:
 
-### Prerequisites
-
-- Node.js installed
-
 ### Installation
 
 1. Clone the repository:
@@ -34,4 +30,8 @@ This Node.js backend serves as the server-side component for the MusicTrack appl
 ## Install dependencies:
 
 - **Method:** `yarn add / npm install`
-  yarn add / npm install
+
+Running the Server
+
+- **Method:** `yarn start / npm start`
+  The server will start on http://localhost:3000.
