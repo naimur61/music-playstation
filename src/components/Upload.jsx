@@ -6,9 +6,8 @@ import Button from "@mui/material/Button";
 import { Grid, Input, InputLabel, Paper, TextField } from "@mui/material";
 import LoadingModal from "../Shared/LoadingModal";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
-const Upload = () => {
+const Upload = ({ setOpen }) => {
 	const navigate = useNavigate();
 
 	const {
@@ -55,7 +54,7 @@ const Upload = () => {
 				// Send backend api request
 				sendToServer(tracks);
 			} else {
-				failedToast();
+				alert("Uploading Failed ~");
 			}
 
 			setLoading(false);
@@ -78,39 +77,12 @@ const Upload = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				if ((data.statuscode === 200) | (data.success === true)) {
-					console.log(data);
-					setLoading(false);
+					setOpen(false);
 					reset();
-					successToast(data?.message);
 					navigate("/");
+					setLoading(false);
 				}
 			});
-	};
-
-	// ToastyFye
-	const successToast = (t) => {
-		toast.success(t, {
-			position: "top-center",
-			autoClose: 1000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-	};
-	const failedToast = () => {
-		toast.error("File Uploaded Failed ~", {
-			position: "top-center",
-			autoClose: 2000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
 	};
 
 	return (
@@ -189,7 +161,6 @@ const Upload = () => {
 				</form>
 			</Paper>
 
-			<ToastContainer />
 			{loading && <LoadingModal txt={"Your File is Uploading!"} />}
 		</div>
 	);

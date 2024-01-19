@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UploadModal from "./UploadModal";
 
 /*-------------------Search bar Style ----------------------*/
 const Search = styled("div")(({ theme }) => ({
@@ -56,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar({ setLoading, setTracks }) {
 	const navigate = useNavigate();
+	const [open, setOpen] = useState(false);
 	const [searchText, setSearchText] = useState("");
 	const [searchTerm, setSearchTerm] = useState(null);
 
@@ -136,7 +138,7 @@ export default function Navbar({ setLoading, setTracks }) {
 							aria-label="account of current user"
 							aria-haspopup="true"
 							onClick={() => {
-								navigate("/upload");
+								setOpen(true);
 							}}
 							color="inherit"
 						>
@@ -145,6 +147,7 @@ export default function Navbar({ setLoading, setTracks }) {
 					</Box>
 				</Toolbar>
 			</AppBar>
+			{open && <UploadModal setOpen={setOpen} />}
 		</Box>
 	);
 }
