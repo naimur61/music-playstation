@@ -77,8 +77,8 @@ const Upload = ({ setOpen }) => {
 			.then((res) => res.json())
 			.then((data) => {
 				if ((data.statuscode === 200) | (data.success === true)) {
-					setOpen(false);
 					reset();
+					setOpen(false);
 					navigate("/");
 					setLoading(false);
 				}
